@@ -17,7 +17,7 @@ const CartItem: React.FC<Props> = props => {
     dispatch(addItemToCart(item))
   }
 
-  const removeItemHAndler = () => {
+  const removeItemHandler = () => {
     dispatch(removeItemFromCart(id))
   }
 
@@ -35,7 +35,7 @@ const CartItem: React.FC<Props> = props => {
           x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button onClick={removeItemHAndler}>-</button>
+          <button onClick={removeItemHandler}>-</button>
           <button onClick={addItemHandler}>+</button>
         </div>
       </div>
