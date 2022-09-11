@@ -18,6 +18,6 @@ const uiSlice = createSlice({
   }
 })
 
-export const uiActions = uiSlice.actions
+export const { toggleCart } = uiSlice.actions
 
 export default uiSlice
