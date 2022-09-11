@@ -1,26 +1,33 @@
 import classes from './CartItem.module.css'
-
-interface Item {
-  title: string
-  quantity: number
-  total: number
-  price: number
-}
+import { default as CartItemType } from '../../types/cart-item'
+import { useAppDispatch } from '../../hooks'
+import { addItemToCart, removeItemFromCart } from '../../store/cart-slice'
+import ProductItem from '../../types/product-item'
 
 interface Props {
-  item: Item
+  item: CartItemType
 }
 
 const CartItem: React.FC<Props> = props => {
-  const { title, quantity, total, price } = props.item
+  const { title, quantity, totalPrice, price, id } = props.item
+  const dispatch = useAppDispatch()
+
+  const addItemHandler = () => {
+    const item: ProductItem = { id, price, title }
+    dispatch(addItemToCart(item))
+  }
+
+  const removeItemHAndler = () => {
+    dispatch(removeItemFromCart(id))
+  }
 
   return (
     <li className={classes.item}>
       <header>
         <h3>{title}</h3>
         <div className={classes.price}>
-          ${total.toFixed(2)}{' '}
-          <span className={classes.itemprice}>(${price.toFixed(2)}/item)</span>
+          £{totalPrice.toFixed(2)}{' '}
+          <span className={classes.itemprice}>(£{price.toFixed(2)}/item)</span>
         </div>
       </header>
       <div className={classes.details}>
@@ -28,8 +35,8 @@ const CartItem: React.FC<Props> = props => {
           x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button>-</button>
-          <button>+</button>
+          <button onClick={removeItemHAndler}>-</button>
+          <button onClick={addItemHandler}>+</button>
         </div>
       </div>
     </li>
