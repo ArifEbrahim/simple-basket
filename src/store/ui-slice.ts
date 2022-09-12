@@ -1,11 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import Notification from '../types/notification'
 
-interface UIState {
+type UIState = {
   isCartVisible: boolean
+  notification: null | Notification
 }
 
 const initialState: UIState = {
-  isCartVisible: false
+  isCartVisible: false,
+  notification: null
 }
 
 const uiSlice = createSlice({
@@ -14,10 +17,17 @@ const uiSlice = createSlice({
   reducers: {
     toggleCart(state) {
       state.isCartVisible = !state.isCartVisible
+    },
+    showNotification(state, action: PayloadAction<Notification>) {
+      state.notification = {
+        status: action.payload.status,
+        title: action.payload.title,
+        message: action.payload.message
+      }
     }
   }
 })
 
-export const { toggleCart } = uiSlice.actions
+export const { toggleCart, showNotification } = uiSlice.actions
 
 export default uiSlice
