@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from './hooks'
 import { useEffect } from 'react'
-import { showNotification } from './store/ui-slice'
+import { sendCartData } from './store/cart-slice'
 
 import Layout from './components/Layout/'
 import Cart from './components/Cart/Cart'
@@ -17,44 +17,11 @@ function App() {
   const URL: string = process.env.REACT_APP_FIREBASE_API ?? ''
 
   useEffect(() => {
-    const sendCartData = async () => {
-      dispatch(
-        showNotification({
-          status: 'pending',
-          title: 'Sending...',
-          message: 'Sending cart data!'
-        })
-      )
-      const response = await fetch(URL, {
-        method: 'PUT',
-        body: JSON.stringify(cart)
-      })
-      if (!response.ok) {
-        throw new Error('Sending cart data failed.')
-      }
-      dispatch(
-        showNotification({
-          status: 'success',
-          title: 'Success!',
-          message: 'Sent cart data successfully!'
-        })
-      )
-    }
-
     if (isInitial) {
       isInitial = false
       return
     }
-
-    sendCartData().catch(error => {
-      dispatch(
-        showNotification({
-          status: 'error',
-          title: 'Error!',
-          message: 'Sending cart data failed!'
-        })
-      )
-    })
+    dispatch(sendCartData(cart))
   }, [cart, URL, dispatch])
 
   return (
