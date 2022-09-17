@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from './hooks'
 import { useEffect } from 'react'
-import { sendCartData } from './store/cart-slice'
+import { sendCartData, fetchCartData } from './store/cart-actions'
 
 import Layout from './components/Layout/'
 import Cart from './components/Cart/Cart'
@@ -14,15 +14,21 @@ function App() {
   const isCartVisible = useAppSelector(state => state.ui.isCartVisible)
   const cart = useAppSelector(state => state.cart)
   const notification = useAppSelector(state => state.ui.notification)
-  const URL: string = process.env.REACT_APP_FIREBASE_API ?? ''
+
+  useEffect(() => {
+    dispatch(fetchCartData)
+  }, [dispatch])
 
   useEffect(() => {
     if (isInitial) {
       isInitial = false
       return
     }
-    dispatch(sendCartData(cart))
-  }, [cart, URL, dispatch])
+
+    if (cart.updated) {
+      dispatch(sendCartData(cart))
+    }
+  }, [cart, dispatch])
 
   return (
     <>
